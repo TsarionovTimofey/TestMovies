@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Test Movies</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="content_description_poster_movie">Poster movie</string>
+    <string name="reviews_label">Reviews</string>
+    <string name="critics_label">Critics</string>
+    <string name="next_page_label">Next Page</string>
+    <string name="movie_description_is_not_avaible">Movie description is not available...</string>
+    <string name="label_next_page">Next page</string>
+    <string name="not_available_label">Not available</string>
+</resources>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_graph"
+    app:startDestination="@id/reviewsFragment">
+
+    <fragment
+        android:id="@+id/reviewsFragment"
+        android:name="com.example.testmovies.scenes.ReviewsFragment"
+        android:label="fragment_reviews"
+        tools:layout="@layout/fragment_reviews" />
+    <fragment
+        android:id="@+id/criticsFragment"
+        android:name="com.example.testmovies.scenes.CriticsFragment"
+        android:label="fragment_critics"
+        tools:layout="@layout/fragment_critics" />
+    <activity
+        android:id="@+id/criticActivity"
+        android:name="com.example.testmovies.scenes.CriticActivity"
+        android:label="activity_critic"
+        tools:layout="@layout/activity_critic" />
+</navigation>
