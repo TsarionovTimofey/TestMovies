@@ -90,8 +90,6 @@ public class CriticsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             //Text
             criticsViewHolder.textViewCriticNameInCritics.setText(critic.getDisplayName());
 
-        } else if (holder instanceof FooterViewHolder) {
-
         }
 
     }

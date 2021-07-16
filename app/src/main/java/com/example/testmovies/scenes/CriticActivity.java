@@ -3,9 +3,11 @@ package com.example.testmovies.scenes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 
 import com.example.testmovies.R;
 import com.example.testmovies.adapters.HeaderAdapter;
+import com.example.testmovies.adapters.items.ItemType;
 
 public class CriticActivity extends AppCompatActivity {
     private ProgressBar progressBarLoadingData;
@@ -37,15 +40,9 @@ public class CriticActivity extends AppCompatActivity {
 
         //RecyclerView
         recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new HeaderAdapter();
         recyclerView.setAdapter(adapter);
-
-        //Toolbar
-        toolbarWithCriticName = findViewById(R.id.toolbarWithCriticName);
-        textViewToolbarCriticName = findViewById(R.id.textViewToolbarCriticName);
-        textViewToolbarCriticName.setText(displayName);
-        //Toolbar
+        changeOrientationRecycler(recyclerView);
 
         //FooterClickListener
         adapter.setOnFooterClickListener(position -> {
@@ -53,10 +50,15 @@ public class CriticActivity extends AppCompatActivity {
             loadData();
         });
 
+        //Toolbar
+        toolbarWithCriticName = findViewById(R.id.toolbarWithCriticName);
+        textViewToolbarCriticName = findViewById(R.id.textViewToolbarCriticName);
+        textViewToolbarCriticName.setText(displayName);
+        setVisibilityToolbar();
+
         //ProgressBar
         progressBarLoadingData = findViewById(R.id.progressBarLoadingDataInCriticActivity);
         progressBarLoadingDataCritic = findViewById(R.id.progressBarLoadingDataCriticInCriticActivity);
-
 
         //Initial load data
         viewModel = new ViewModelProvider(this).get(CriticViewModel.class);
@@ -70,7 +72,7 @@ public class CriticActivity extends AppCompatActivity {
                     progressBarLoadingDataCritic.setVisibility(View.GONE);
                     loadData();
                 }
-                if (itemTypes.size() > offset + 1) {
+                if (itemTypes.size() > offset + 1 | itemTypes.get(itemTypes.size() - 1).getItemType() == ItemType.TYPE_ITEM) {
                     progressBarLoadingData.setVisibility(View.GONE);
                 }
 
@@ -86,6 +88,32 @@ public class CriticActivity extends AppCompatActivity {
     private void loadDataCritic() {
         viewModel.loadDataCritic(displayName, offset);
         progressBarLoadingDataCritic.setVisibility(View.VISIBLE);
+    }
+
+    private void changeOrientationRecycler(RecyclerView view) {
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        } else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(view.getContext(), 2);
+            gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int position) {
+                    if (adapter.getItemViewType(position) == ItemType.TYPE_ITEM) {
+                        return 1;
+                    }
+                    return 2;
+                }
+            });
+            recyclerView.setLayoutManager(gridLayoutManager);
+        }
+    }
+
+    private void setVisibilityToolbar() {
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            toolbarWithCriticName.setVisibility(View.VISIBLE);
+        } else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            toolbarWithCriticName.setVisibility(View.GONE);
+        }
     }
 
 }

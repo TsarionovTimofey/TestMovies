@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         //Toolbar
         toolbarWithSwitcher = findViewById(R.id.toolbarWithSwitcher);
         textViewToolbarTitle = findViewById(R.id.textViewToolbarTitle);
@@ -43,10 +42,10 @@ public class MainActivity extends AppCompatActivity {
 
         textViewToolbarCriticsSelect = findViewById(R.id.textViewToolbarSelectCritics);
         textViewToolbarCriticsSelect.setOnClickListener(this::setFragment);
-        //Toolbar
 
         navController = Navigation.findNavController(this, R.id.nav_host_fragment_container);
 
+        //Save state
         if (savedInstanceState != null) {
             blockNavigation = savedInstanceState.getString("blockNavigation");
             if (blockNavigation.equals(REVIEWS)) setReviewsTopBar();

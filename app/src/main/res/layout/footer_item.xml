@@ -14,7 +14,7 @@
             android:gravity="center"
             android:paddingTop="4dp"
             android:paddingBottom="4dp"
-            android:text="@string/label_next_page"
+            android:text="@string/next_page_label"
             android:textStyle="bold" />
 
     </androidx.cardview.widget.CardView>

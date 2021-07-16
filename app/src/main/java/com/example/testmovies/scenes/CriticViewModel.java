@@ -10,7 +10,6 @@ import com.example.testmovies.adapters.items.ItemType;
 import com.example.testmovies.api.ApiFactory;
 import com.example.testmovies.api.ApiService;
 import com.example.testmovies.pojo.critic.Critic;
-import com.example.testmovies.pojo.review.Review;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,9 +78,25 @@ public class CriticViewModel extends ViewModel {
                     if (reviewResponse.getReviews() == null && items.size() == 0) {
                         itemsLiveData.setValue(items);
                     }
+                    if (reviewResponse.getReviews() == null && items.get(items.size() - 1).getItemType() == ItemType.TYPE_FOOTER) {
+                        items.remove(items.size() - 1);
+                        itemsLiveData.setValue(items);
+                    }
+
+//                    Log.i("error", " offset " +  offset);
+//                    Log.i("error", " item type " +  (items.get(items.size() - 1).getItemType()));
+//                    Log.i("error", " response " + (reviewResponse.getReviews().size()));
+//                    Log.i("error", " size " + (items.size()));
 
                 }, throwable -> Log.i("errorLoadDataReviewByCr", throwable.getMessage()));
 
         compositeDisposable.add(disposable);
+    }
+
+    @Override
+    protected void onCleared() {
+        if (compositeDisposable != null)
+            compositeDisposable.dispose();
+        super.onCleared();
     }
 }

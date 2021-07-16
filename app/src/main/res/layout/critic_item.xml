@@ -22,7 +22,8 @@
                 android:layout_height="150dp"
                 android:layout_gravity="center"
                 android:scaleType="centerCrop"
-                tools:srcCompat="@drawable/sample_critic" />
+                tools:srcCompat="@drawable/sample_critic"
+                android:contentDescription="@string/image_critic_content_description" />
         </com.google.android.material.card.MaterialCardView>
 
         <TextView

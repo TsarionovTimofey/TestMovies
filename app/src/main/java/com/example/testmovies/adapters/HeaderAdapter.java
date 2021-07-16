@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.testmovies.R;
-import com.example.testmovies.adapters.items.FooterNext;
 import com.example.testmovies.adapters.items.ItemType;
 import com.example.testmovies.pojo.critic.Critic;
 import com.example.testmovies.pojo.review.Review;
@@ -80,10 +79,10 @@ public class HeaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             } else {
                 viewHolderCriticHeader.textViewCriticBioCriticHeader.setText("");
             }
-            if (critic.getStatus() != null) {
-                viewHolderCriticHeader.textViewCriticStatusCriticHeader.setText(critic.getStatus());
-            } else {
+            if (critic.getStatus().equals("")) {
                 viewHolderCriticHeader.textViewCriticStatusCriticHeader.setText(R.string.not_available_label);
+            } else {
+                viewHolderCriticHeader.textViewCriticStatusCriticHeader.setText(critic.getStatus());
             }
 
             //Image
@@ -122,13 +121,14 @@ public class HeaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             //Description
             String description = review.getSummaryShort();
             if (description.equals("")) {
-                reviewViewHolder.textViewMovieDescription.setText("Movie description is not available...");
+                reviewViewHolder.textViewMovieDescription.setText(R.string.movie_description_is_not_available_label);
             } else {
                 if (description.length() >= 150) {
                     description = description.substring(0, 150) + "...";
                 }
                 reviewViewHolder.textViewMovieDescription.setText(description);
             }
+
             //Publication time
             //Since the api does not provide getting the publication date,
             // we will parse the date update
@@ -136,10 +136,6 @@ public class HeaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 String publicationTime = review.getDateUpdated().substring(11);
                 reviewViewHolder.textViewReviewPublicationTime.setText(publicationTime);
             }
-
-
-        } else if (holder instanceof FooterViewHolder) {
-
         }
     }
 

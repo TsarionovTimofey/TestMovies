@@ -6,12 +6,12 @@ import android.widget.EditText
 import androidx.lifecycle.MutableLiveData
 
 class DateInputMask(val input: EditText) {
-    var block: String = "";
+    var block: String = ""
     fun listen() {
         input.addTextChangedListener(mDateEntryWatcher)
     }
 
-    private val liveData: MutableLiveData<String> = MutableLiveData();
+    private val liveData: MutableLiveData<String> = MutableLiveData()
     fun getLiveData(): MutableLiveData<String> {
         return liveData
     }

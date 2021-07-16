@@ -85,7 +85,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             //Description
             String description = review.getSummaryShort();
             if (description.equals("")) {
-                reviewViewHolder.textViewMovieDescription.setText(R.string.movie_description_is_not_avaible);
+                reviewViewHolder.textViewMovieDescription.setText(R.string.movie_description_is_not_available_label);
             } else {
                 if (description.length() >= 150) {
                     description = description.substring(0, 150) + "...";
@@ -99,8 +99,6 @@ public class ReviewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 String publicationTime = review.getDateUpdated().substring(11);
                 reviewViewHolder.textViewReviewPublicationTime.setText(publicationTime);
             }
-
-        } else if (holder instanceof FooterViewHolder) {
 
         }
     }

@@ -137,14 +137,13 @@ public class ReviewsFragment extends Fragment {
             loadData();
         });
 
-        setVisibilityEditText(view);
+        setVisibilityEditText();
 
         return view;
     }
 
     private void sortDate(String s) {
         if (s.equals("")) {
-            Log.i("aaaar", "пусто");
             publicationDate = "";
         }
 
@@ -194,7 +193,7 @@ public class ReviewsFragment extends Fragment {
         viewModel.setRecyclerViewReviewsState(recyclerViewStateReviews);
     }
 
-    private void setVisibilityEditText(View view) {
+    private void setVisibilityEditText() {
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             includeDataEditTextReviews.setVisibility(View.VISIBLE);
             includeQueryEditTextReviews.setVisibility(View.VISIBLE);

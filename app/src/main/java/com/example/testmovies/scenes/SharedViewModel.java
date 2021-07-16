@@ -28,10 +28,8 @@ public class SharedViewModel extends ViewModel {
     private MutableLiveData<List<ItemType>> reviews = new MutableLiveData<>();
     private MutableLiveData<List<ItemType>> critics = new MutableLiveData<>();
 
-
     private List<ItemType> criticsRaw = new ArrayList<>();
     private List<ItemType> reviewsRaw = new ArrayList<>();
-
 
     public MutableLiveData<List<ItemType>> getReviews() {
         return reviews;
@@ -148,6 +146,10 @@ public class SharedViewModel extends ViewModel {
                     if (reviewResponse.getReviews() == null && reviewsRaw.isEmpty()) {
                         reviews.setValue(new ArrayList<>());
                     }
+                    if (reviewResponse.getReviews() == null && reviewsRaw.get(reviewsRaw.size() - 1).getItemType() == ItemType.TYPE_FOOTER) {
+                        reviewsRaw.remove(reviewsRaw.size() - 1);
+                        reviews.setValue(reviewsRaw);
+                    }
                 }, throwable -> Log.i("errorLoadDataReviews", throwable.getMessage()));
 
         compositeDisposable.add(disposable);
@@ -163,13 +165,13 @@ public class SharedViewModel extends ViewModel {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(criticResponse -> {
-
+                    List<Critic> criticsByStorage = new ArrayList<>();
                     if (offset == 0) {
                         criticsRaw.clear();
                         critics.setValue(criticsRaw);
                     }
                     if (criticResponse.getCritics() != null) {
-                        List<Critic> criticsByStorage = downloadByParts(reviewer, offset, criticResponse.getCritics());
+                        criticsByStorage = downloadByParts(reviewer, offset, criticResponse.getCritics());
 
                         if (criticsRaw.size() >= 19) {
                             criticsRaw.remove(criticsRaw.size() - 1);
@@ -179,11 +181,20 @@ public class SharedViewModel extends ViewModel {
                             criticsRaw.add(new FooterNext());
                         }
                         critics.setValue(criticsRaw);
-
-                        if (criticResponse.getCritics() == null && criticsRaw.isEmpty()) {
-                            critics.setValue(new ArrayList<>());
-                        }
                     }
+
+                    if (criticResponse.getCritics() == null && criticsRaw.isEmpty()) {
+                        critics.setValue(new ArrayList<>());
+                    }
+                    if (criticsByStorage.size() == 0 && criticsRaw.get(criticsRaw.size() - 1).getItemType() == ItemType.TYPE_FOOTER) {
+                        criticsRaw.remove(criticsRaw.size() - 1);
+                        critics.setValue(criticsRaw);
+                    }
+
+//                    Log.i("error", " item type " + (criticsRaw.get(criticsRaw.size() - 1).getItemType()));
+//                    Log.i("error", " response " + (criticResponse.getCritics().size()));
+//                    Log.i("error", " size " + (critics.getValue().size()));
+//                    Log.i("error", " criticsByStorage " + (criticsByStorage.size()));
 
                 }, throwable -> Log.i("errorLoadDataCritics", throwable.getMessage()));
 
@@ -196,25 +207,31 @@ public class SharedViewModel extends ViewModel {
     // so this method emulates getting data in parts from api
 
     private List<Critic> downloadByParts(String reviewer, int offset, List<Critic> criticsFromApi) {
-        List<Critic> raw = criticsFromApi;
         List<Critic> criticsStorage = new ArrayList<>();
 
         if (offset == 0) {
-            if (raw.size() > 19) {
-                for (int i = 0; i < 20; i++) criticsStorage.add(raw.get(i));
+            if (criticsFromApi.size() > 19) {
+                for (int i = 0; i < 20; i++) criticsStorage.add(criticsFromApi.get(i));
             } else {
-                criticsStorage.addAll(raw);
+                criticsStorage.addAll(criticsFromApi);
             }
         } else {
-            if (raw.size() < offset + 20) {
-                for (int i = offset; i < raw.size(); i++) criticsStorage.add(raw.get(i));
+            if (criticsFromApi.size() < offset + 20) {
+                for (int i = offset; i < criticsFromApi.size(); i++) criticsStorage.add(criticsFromApi.get(i));
             } else {
-                for (int i = offset; i < offset + 20; i++) criticsStorage.add(raw.get(i));
+                for (int i = offset; i < offset + 20; i++) criticsStorage.add(criticsFromApi.get(i));
             }
 
         }
 
         return criticsStorage;
+    }
+
+    @Override
+    protected void onCleared() {
+        if (compositeDisposable != null)
+            compositeDisposable.dispose();
+        super.onCleared();
     }
 
 
