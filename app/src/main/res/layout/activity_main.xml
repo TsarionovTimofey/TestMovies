@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context=".scenes.MainActivity">
 
-    <include layout="@layout/toolbar_with_switcher" />
+    <include layout="@layout/toolbar_with_switcher_without_paddings" />
 
     <fragment
         android:id="@+id/nav_host_fragment_container"
