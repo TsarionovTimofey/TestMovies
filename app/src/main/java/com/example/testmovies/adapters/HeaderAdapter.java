@@ -74,10 +74,10 @@ public class HeaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
             //Text
             viewHolderCriticHeader.textViewCriticNameCriticHeader.setText(critic.getDisplayName());
-            if (critic.getBio() != null) {
+            if (!critic.getBio().equals("")) {
                 viewHolderCriticHeader.textViewCriticBioCriticHeader.setText(critic.getBio().replace("<br/><br/>", ""));
             } else {
-                viewHolderCriticHeader.textViewCriticBioCriticHeader.setText("");
+                viewHolderCriticHeader.textViewCriticBioCriticHeader.setVisibility(View.GONE);
             }
             if (critic.getStatus().equals("")) {
                 viewHolderCriticHeader.textViewCriticStatusCriticHeader.setText(R.string.not_available_label);
